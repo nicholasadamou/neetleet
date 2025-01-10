@@ -23,10 +23,15 @@ jobs:
           node-version: 18 # Ensure Node.js 18
           cache: 'pnpm' # Cache pnpm dependencies
 
+      # Set up PNPM
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8 # Optionally specify a version of pnpm
+
       # Install pnpm and dependencies
       - name: Install dependencies
         run: |
-          npm install -g pnpm
           pnpm install
 
       # Run tests to ensure application stability
