@@ -21,7 +21,7 @@ NeetLeet is a Chrome extension that integrates [NeetCode](https://neetcode.io) s
 
 ### **1. Clone the Repository**
 ```bash
-git clone https://github.com/daily-coding-problem/neetleet.git
+git clone https://github.com/nicholasadamou/neetleet.git
 cd neetleet
 ```
 

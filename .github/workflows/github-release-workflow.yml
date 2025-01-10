@@ -1,0 +1,86 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  workflow_dispatch: # Allow manual trigger from the GitHub Actions interface
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Ensure Node.js 18
+          cache: 'pnpm' # Cache pnpm dependencies
+
+      # Install pnpm and dependencies
+      - name: Install dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      # Run tests to ensure application stability
+      - name: Run tests
+        run: |
+          pnpm run test:unit
+
+      # Build the project after successful tests
+      - name: Build the project
+        run: |
+          pnpm run build
+
+      # Archive the build output
+      - name: Archive build artifacts
+        run: |
+          tar -czvf build-output.tar.gz ./dist # Replace './dist' with your actual build directory
+        shell: bash
+
+      # Generate release notes from recent commits
+      - name: Generate Release Notes
+        id: generate_release_notes
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: recentCommits } = await github.repos.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 10, // Adjust the number of commits for release notes
+              sha: context.ref.replace("refs/heads/", ""),
+            });
+
+            const releaseNotes = recentCommits
+              .map(commit => `- ${commit.commit.message} (by ${commit.commit.author.name})`)
+              .join("\n");
+
+            core.setOutput("releaseNotes", releaseNotes);
+          result-encoding: string
+
+      # Create a GitHub release with the generated notes
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name || 'v1.0.0' }} # Use the current version or fallback to 'v1.0.0'
+          release_name: "Release ${{ github.ref_name || 'v1.0.0' }}"
+          body: ${{ steps.generate_release_notes.outputs.releaseNotes || 'No release notes provided' }}
+          draft: false
+          prerelease: false
+
+      # Upload the build output as part of the release
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build-output.tar.gz # Path to the archived build output
+          asset_name: build-output.tar.gz # Name of the uploaded asset
+          asset_content_type: application/gzip

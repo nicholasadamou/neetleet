@@ -9,7 +9,7 @@ describe('LeetCode NeetCode Chrome Extension Tests', () => {
     browser = await puppeteer.launch({
       headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"], // Add these flags for container environments
-      dumpio: true, // Dumps browser process output to console
+      // dumpio: true, // Dumps browser process output to console
     });
     page = await browser.newPage();
     await page.goto("https://leetcode.com/problems/two-sum/");

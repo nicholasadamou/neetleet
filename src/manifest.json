@@ -1,21 +1,36 @@
 {
-  "manifest_version": 3,
-  "name": "NeetCode LeetCode Extension",
-  "version": "1.0.0",
-  "description": "Adds a button to LeetCode problems linking to NeetCode solutions.",
-  "permissions": ["scripting", "tabs"],
-  "host_permissions": ["https://leetcode.com/problems/*"],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://leetcode.com/problems/*"],
-      "js": ["content.js"]
-    }
-  ],
-  "action": {
-    "default_title": "NeetCode Solutions",
-    "default_popup": "popup.html"
-  }
+	"manifest_version": 3,
+	"name": "NeetCode LeetCode Extension",
+	"version": "1.0.0",
+	"description": "Adds a button to LeetCode problems linking to NeetCode solutions.",
+	"permissions": [
+		"scripting",
+		"tabs",
+		"contextMenus",
+		"activeTab"
+	],
+	"host_permissions": [
+		"https://leetcode.com/problems/*",
+		"https://neetcode.io/*"
+	],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": ["https://leetcode.com/problems/*"],
+			"js": ["content.js"]
+		}
+	],
+	"icons": {
+		"16": "icons/logo-16.png",
+		"48": "icons/logo-48.png",
+		"128": "icons/logo-128.png"
+	},
+	"web_accessible_resources": [
+		{
+			"resources": ["icons/logo-128.png"],
+			"matches": ["<all_urls>"]
+		}
+	]
 }
