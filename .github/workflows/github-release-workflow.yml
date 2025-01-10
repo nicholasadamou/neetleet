@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18 # Ensure Node.js 18
-          cache: 'pnpm' # Cache pnpm dependencies
 
       # Set up PNPM
       - name: Setup PNPM
