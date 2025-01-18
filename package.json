@@ -1,0 +1,19 @@
+{
+	"name": "neetleet",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"chokidar": "^4.0.3",
+		"typescript": "^5.7.3"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^28.0.2",
+		"@types/chrome": "^0.0.224",
+		"chokidar-cli": "^3.0.0"
+	},
+	"scripts": {
+		"build": "tsc && pnpm copy-public",
+		"copy-public": "cp -r public/* dist/",
+		"watch": "node watch.js"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"outDir": "./dist", // Output folder where your compiled JS files are stored
+		"rootDir": "./src", // Input folder containing your .ts files
+		"paths": {
+			"@/*": ["./src/*"] // Maps `@/` to the `src` folder
+		}
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules"]
+}
